@@ -9,12 +9,8 @@ namespace BlackJack.Repository
     public abstract class Person
     {
         public Hand Hand { get; set; }
-        public string Name { get; }
+        public string Name { get; protected set; }
 
-        public Person(string name)
-        {
-            Hand = new Hand();
-            Name = name;
-        }
+        public Person() => Hand = new Hand();
     }
 }

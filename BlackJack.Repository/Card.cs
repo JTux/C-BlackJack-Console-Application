@@ -12,6 +12,7 @@ namespace BlackJack.Repository
     {
         public CardSuit Suit { get; set; }
         public int Value { get; set; }
+        public bool IsFaceDown { get; set; }
 
         public override string ToString()
         {
@@ -35,7 +36,7 @@ namespace BlackJack.Repository
                     break;
             }
 
-            return $"{name} of {Suit}";
+            return (!IsFaceDown) ? $"{name} of {Suit}" : "card";
         }
     }
 }

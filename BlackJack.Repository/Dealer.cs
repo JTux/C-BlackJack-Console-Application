@@ -12,16 +12,22 @@ namespace BlackJack.Repository
         private readonly Random _rand;
 
         public List<Card> AllCards { get; private set; }
+        public List<Card> DiscardPile { get; private set; }
 
-        public Dealer() : base("Dealer")
+        public Dealer()
         {
+            Name = "Dealer";
             _rand = new Random();
             _decks = new List<Deck>();
             AllCards = new List<Card>();
+            DiscardPile = new List<Card>();
         }
 
         public void AddDeck() => _decks.Add(new Deck());
+        public void AddDeck(Deck deck) => _decks.Add(deck);
+
         public void RemoveDeck() => _decks.RemoveAt(_decks.Count - 1);
+        public void RemoveDeck(Deck deck) => _decks.Remove(deck);
 
         public Card DealCard()
         {
@@ -31,6 +37,7 @@ namespace BlackJack.Repository
             var card = AllCards.FirstOrDefault();
 
             AllCards.Remove(card);
+            DiscardPile.Add(card);
             return card;
         }
 
@@ -38,6 +45,7 @@ namespace BlackJack.Repository
         {
             var allCards = CombineAllDecks();
             AllCards = ShuffleDeck(allCards);
+            DiscardPile = new List<Card>();
         }
 
         private List<Card> CombineAllDecks()

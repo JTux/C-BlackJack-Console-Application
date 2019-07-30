@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BlackJack.UI
@@ -11,45 +12,33 @@ namespace BlackJack.UI
     {
         static void Main(string[] args)
         {
-            var deck = new Deck();
-
             while (true)
             {
                 Console.Clear();
 
                 var dealer = new Dealer();
 
-                for (int i = 0; i < 4; i++)
-                    dealer.AddDeck();
+                var game = new Game(dealer);
+                game.InitializeDeck(6);
+                var people = new List<Person>
+                    {
+                        new Player("Joshua"),
+                        new Player("Lawrence"),
+                        new Player("Marty")
+                    };
+                game.AddPlayers(people);
 
-                dealer.ShuffleAllCards();
                 while (true)
                 {
                     Console.Clear();
-                    var playerOne = new Player("Joshua");
-                    var playerTwo = new Player("Lawrence");
-                    var playerThree = new Player("Grant");
-
-                    dealer.Hand = new Hand();
-
-                    var people = new List<Person>();
-                    people.Add(playerOne);
-                    people.Add(playerTwo);
-                    people.Add(playerThree);
-                    people.Add(dealer);
-
-                    for (int i = 0; i < 2; i++)
-                        foreach (var person in people)
-                        {
-                            person.Hand.AddCard(dealer.DealCard());
-                            if (!(person is Dealer))
-                                Console.WriteLine($"{person.Name} was given {person.Hand.GetHand()[i]}");
-                        }
+                    game.StartNewRound();
+                    game.DealCards();
 
                     Console.WriteLine();
 
-                    foreach(var person in people)
-                        Console.WriteLine($"{person.Name} has {person.Hand.TotalValue} points");
+                    game.DisplayPoints();
+
+                    Console.WriteLine($"\nCards left: {dealer.AllCards.Count}\nUsed cards: {dealer.DiscardPile.Count}");
 
                     Console.ReadKey();
                 }

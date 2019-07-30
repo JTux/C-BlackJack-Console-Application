@@ -8,8 +8,9 @@ namespace BlackJack.Repository
 {
     public class Player : Person
     {
-        public Player(string name) : base(name)
+        public Player(string name)
         {
+            Name = name;
         }
     }
 }
